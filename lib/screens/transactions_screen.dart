@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/transaction_service.dart';
-import '../models/transaction.dart';
+import 'package:telephony/telephony.dart';
 
 class TransactionsScreen extends StatefulWidget {
   const TransactionsScreen({super.key});
@@ -11,78 +10,92 @@ class TransactionsScreen extends StatefulWidget {
 }
 
 class _TransactionsScreenState extends State<TransactionsScreen> {
-  final TransactionService transactionService = TransactionService();
-  final TextEditingController _phoneNumberController = TextEditingController();
+  final Telephony telephony = Telephony.instance;
 
-  List<Transaction>? _transactions;
-  bool _isLoading = false;
-  String? _error;
+  List<SmsMessage> messages = [];
+  List<SmsMessage> filteredMessages = [];
 
-  void _fetchTransactions() async {
+  void fetchMessages() async {
+    List<SmsMessage> smsMessages = await telephony.getInboxSms(
+      columns: [SmsColumn.ADDRESS, SmsColumn.BODY, SmsColumn.DATE],
+    );
+
+    // Filter messages right after fetching
+    final filtered = smsMessages
+        .where((message) =>
+            message.address == "M-Money" &&
+            message.body != null &&
+            message.body!.trim().isNotEmpty)
+        .toList();
+
     setState(() {
-      _isLoading = true;
-      _error = null;
+      messages = smsMessages; // Keep the original list of messages
+      filteredMessages =
+          filtered; // Update filteredMessages with the filtered list
     });
+  }
 
-    try {
-      final transactions = await transactionService
-          .getTransactionsByNumber(_phoneNumberController.text);
-
-      setState(() {
-        _transactions = transactions;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _error = e.toString();
-        _isLoading = false;
-      });
+  IconData getTransactionIcon(String messageBody) {
+    if (messageBody.contains("received") ||
+        messageBody.contains("deposit") ||
+        messageBody.contains("credited") ||
+        messageBody.contains("recieved")) {
+      return Icons.arrow_upward; // Upward green arrow icon
+    } else if (messageBody.contains("sent") ||
+        messageBody.contains("payment") ||
+        messageBody.contains("transferred")) {
+      return Icons.arrow_downward; // Downward red arrow icon
+    } else {
+      return Icons.help;
     }
+  }
+
+  Color getIconColor(IconData icon) {
+    // Assign color based on the icon
+    if (icon == Icons.arrow_upward) {
+      return Colors.green;
+    } else if (icon == Icons.arrow_downward) {
+      return Colors.red;
+    } else {
+      return Colors.grey; // Default color
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchMessages();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Transactions'),
+        title: const Text('M-Money Transactions'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _phoneNumberController,
-              decoration: const InputDecoration(
-                labelText: 'Enter Phone Number',
-                border: OutlineInputBorder(),
-              ),
-              keyboardType: TextInputType.phone,
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _fetchTransactions,
-              child: const Text('Fetch Transactions'),
-            ),
-            if (_isLoading) const CircularProgressIndicator(),
-            if (_error != null)
-              Text('Error: $_error', style: const TextStyle(color: Colors.red)),
-            if (_transactions != null)
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _transactions!.length,
-                  itemBuilder: (context, index) {
-                    final transaction = _transactions![index];
-                    return ListTile(
-                      title: Text('Transaction: ${transaction.id}'),
-                      subtitle: Text(
-                          'Amount: ${transaction.amount} ${transaction.currency}'),
-                      trailing: Text('Status: ${transaction.status}'),
-                    );
-                  },
+      body: ListView.builder(
+        itemCount: filteredMessages.length,
+        itemBuilder: (context, index) {
+          final message = filteredMessages[index];
+          final icon = getTransactionIcon(message.body!);
+          final iconColor = getIconColor(icon);
+
+          return Column(
+            children: [
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: iconColor.withOpacity(
+                      0.2), // Lighten the icon color for the background
+                  child: Icon(icon, color: iconColor),
                 ),
+                title: Text(message.body!),
+                subtitle: Text(
+                    'Date: ${DateTime.fromMillisecondsSinceEpoch(message.date!)}'),
               ),
-          ],
-        ),
+              const Divider(), // Add a divider below each ListTile
+            ],
+          );
+        },
       ),
     );
   }

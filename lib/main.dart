@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/transactions_screen.dart';
+import 'package:momo_wallet_watcher/screens/home_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
@@ -15,7 +15,7 @@ class WalletWatcher extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Momo Wallet Watcher',
-      home: TransactionsScreen(),
+      home: MyHomePage(title: 'Momo Wallet Watcher'),
     );
   }
 }
