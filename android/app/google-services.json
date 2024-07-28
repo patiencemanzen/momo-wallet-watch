@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "98009371906",
+    "project_id": "momo-watcher",
+    "storage_bucket": "momo-watcher.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98009371906:android:5438f15fa7ec3610489e1b",
+        "android_client_info": {
+          "package_name": "com.example.momo_wallet_watcher"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpt3RfzFQY_zPhS9lGEFE78iOhMR9OgXw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

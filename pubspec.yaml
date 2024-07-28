@@ -32,6 +32,9 @@ dependencies:
   telephony: ^0.2.0
   syncfusion_flutter_charts: ^26.2.4
   intl: ^0.19.0
+  firebase_auth: ^5.1.2  
+  cloud_firestore: ^5.1.0
+  flutter_form_builder: ^9.3.0
   
 dev_dependencies:
   flutter_test:

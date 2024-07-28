@@ -8,9 +8,9 @@ import 'package:momo_wallet_watcher/screens/goals_screen.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
-    Key? key,
+    super.key,
     this.title,
-  }) : super(key: key);
+  });
   final String? title;
 
   @override
@@ -102,13 +102,13 @@ class _MyHomePageState extends State<MyHomePage> {
         screen = const AnalyticsScreen();
         break;
       case 1:
-        screen = const BudgetingScreen();
+        screen = BudgetScreen();
         break;
       case 2:
-        screen = const ExpensesScreen();
+        screen = ExpenseScreen();
         break;
       case 3:
-        screen = const GoalsScreen();
+        screen = GoalScreen();
         break;
     }
 
