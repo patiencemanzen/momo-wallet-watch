@@ -15,7 +15,6 @@ class ExpenseScreen extends StatelessWidget {
     final expenseService = Provider.of<ExpenseService>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Manage Expenses')),
       body: Column(
         children: [
           Form(
@@ -79,10 +78,36 @@ class ExpenseScreen extends StatelessWidget {
                   itemCount: expenses.length,
                   itemBuilder: (context, index) {
                     final expense = expenses[index];
-                    return ListTile(
-                      title: Text(expense.category),
-                      subtitle: Text('\$${expense.amount.toStringAsFixed(2)}'),
-                      trailing: Text(expense.date.toLocal().toString()),
+                    return Card(
+                      elevation: 4.0,
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 15.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: ListTile(
+                          title: Text(
+                            expense.category,
+                            style: const TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          subtitle: Text(
+                            '\$${expense.amount.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.green,
+                            ),
+                          ),
+                          trailing: Text(
+                            expense.date.toLocal().toString(),
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                      ),
                     );
                   },
                 );

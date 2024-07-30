@@ -18,7 +18,6 @@ class GoalScreen extends StatelessWidget {
     final goalService = Provider.of<GoalService>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Manage Financial Goals')),
       body: Column(
         children: [
           Form(
@@ -111,20 +110,60 @@ class GoalScreen extends StatelessWidget {
                 if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
+
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }
+
                 final goals = snapshot.data ?? [];
+                final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+
                 return ListView.builder(
                   itemCount: goals.length,
                   itemBuilder: (context, index) {
                     final goal = goals[index];
-                    return ListTile(
-                      title: Text(goal.description),
-                      subtitle: Text(
-                          'Target: \$${goal.targetAmount.toStringAsFixed(2)}, Saved: \$${goal.savedAmount.toStringAsFixed(2)}'),
-                      trailing:
-                          Text('Target Date: ${goal.targetDate.toLocal()}'),
+                    return Card(
+                      elevation: 4.0,
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 15.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: ListTile(
+                          title: Text(
+                            goal.description,
+                            style: const TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Target: \$${goal.targetAmount.toStringAsFixed(2)}',
+                                style: const TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.green,
+                                ),
+                              ),
+                              Text(
+                                'Saved: \$${goal.savedAmount.toStringAsFixed(2)}',
+                                style: const TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ],
+                          ),
+                          trailing: Text(
+                            'Target Date: ${dateFormat.format(goal.targetDate)}',
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                      ),
                     );
                   },
                 );

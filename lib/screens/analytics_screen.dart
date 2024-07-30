@@ -144,7 +144,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
 
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      vertical: 8.0, horizontal: 16.0),
+                      vertical: 8.0, horizontal: 20.0),
                   child: SizedBox(
                     height: 400, // Set a fixed height for the ListView
                     child: ListView.builder(

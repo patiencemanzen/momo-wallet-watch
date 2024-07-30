@@ -33,7 +33,7 @@ class WalletWatcher extends StatelessWidget {
         Provider<ExpenseService>(create: (_) => ExpenseService()),
       ],
       child: MaterialApp(
-        title: 'Flutter App',
+        title: 'Momo Watcher',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),

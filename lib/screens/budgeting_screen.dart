@@ -18,7 +18,6 @@ class BudgetScreen extends StatelessWidget {
     final budgetService = Provider.of<BudgetService>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Manage Budgets')),
       body: Column(
         children: [
           Form(
@@ -127,11 +126,48 @@ class BudgetScreen extends StatelessWidget {
                   itemCount: budgets.length,
                   itemBuilder: (context, index) {
                     final budget = budgets[index];
-                    return ListTile(
-                      title: Text(budget.category),
-                      subtitle: Text('\$${budget.amount.toStringAsFixed(2)}'),
-                      trailing: Text(
-                          '${budget.startDate.toLocal()} - ${budget.endDate.toLocal()}'),
+                    return Card(
+                      elevation: 4.0,
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 15.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              budget.category,
+                              style: const TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 10.0),
+                            Text(
+                              '\$${budget.amount.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.green,
+                              ),
+                            ),
+                            const SizedBox(height: 10.0),
+                            Text(
+                              'Start Date: ${budget.startDate.toLocal()}',
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                            Text(
+                              'End Date: ${budget.endDate.toLocal()}',
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     );
                   },
                 );
