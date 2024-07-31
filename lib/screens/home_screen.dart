@@ -33,7 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     ),
     TabItem(
-      Icons.pie_chart_outline,
+      Icons.pie_chart,
       "Budget",
       Colors.orange,
       labelStyle: const TextStyle(
@@ -42,13 +42,13 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     ),
     TabItem(
-      Icons.money,
+      Icons.receipt,
       "Expenses",
       Colors.red,
       circleStrokeColor: Colors.black,
     ),
     TabItem(
-      Icons.star,
+      Icons.flag,
       "Goals",
       Colors.cyan,
     ),

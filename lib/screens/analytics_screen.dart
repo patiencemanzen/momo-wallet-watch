@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:intl/intl.dart';
 import 'package:telephony/telephony.dart';
 
 class AnalyticsScreen extends StatefulWidget {
@@ -15,27 +14,41 @@ class AnalyticsScreen extends StatefulWidget {
 
 class _AnalyticsScreenState extends State<AnalyticsScreen> {
   List<ChartSampleData>? chartData;
-  late bool isCardView = false;
-  final Telephony telephony = Telephony.instance;
-
+  Map<String, Map<String, double>> groupedAmounts = {};
   List<SmsMessage> messages = [];
   List<SmsMessage> filteredMessages = [];
 
+  late bool isCardView = false;
+  final Telephony telephony = Telephony.instance;
+
   @override
   void initState() {
-    chartData = <ChartSampleData>[
-      ChartSampleData(x: DateTime(2000), y: 4, secondSeriesYValue: 2.6),
-      ChartSampleData(x: DateTime(2001), y: 3.0, secondSeriesYValue: 2.8),
-      ChartSampleData(x: DateTime(2002), y: 3.8, secondSeriesYValue: 2.6),
-      ChartSampleData(x: DateTime(2003), y: 3.4, secondSeriesYValue: 3),
-      ChartSampleData(x: DateTime(2004), y: 3.2, secondSeriesYValue: 3.6),
-      ChartSampleData(x: DateTime(2005), y: 3.9, secondSeriesYValue: 3),
-    ];
     super.initState();
-    fetchMessages();
+    _initializeData();
   }
 
-  void fetchMessages() async {
+  Future<void> _initializeData() async {
+    await fetchMessages();
+
+    for (var message in filteredMessages) {
+      DateTime date = parseDate(message.body!);
+      String monthKey = '${date.year}-${date.month.toString().padLeft(2, '0')}';
+
+      if (!groupedAmounts.containsKey(monthKey)) {
+        groupedAmounts[monthKey] = {'sent': 0.0, 'received': 0.0};
+      }
+
+      groupedAmounts[monthKey]!['sent'] =
+          groupedAmounts[monthKey]!['sent']! + extractSentAmount(message.body!);
+      groupedAmounts[monthKey]!['received'] =
+          groupedAmounts[monthKey]!['received']! +
+              extractReceivedAmount(message.body!);
+    }
+
+    chartData = prepareChartData(groupedAmounts);
+  }
+
+  Future<void> fetchMessages() async {
     List<SmsMessage> smsMessages = await telephony.getInboxSms(
       columns: [SmsColumn.ADDRESS, SmsColumn.BODY, SmsColumn.DATE],
     );
@@ -86,18 +99,43 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
       AreaSeries<ChartSampleData, DateTime>(
         dataSource: chartData,
         opacity: 0.7,
-        name: 'Incomes',
+        name: 'Sent Amount',
         xValueMapper: (ChartSampleData sales, _) => sales.x as DateTime,
         yValueMapper: (ChartSampleData sales, _) => sales.y,
       ),
       AreaSeries<ChartSampleData, DateTime>(
         dataSource: chartData,
         opacity: 0.7,
-        name: 'Expenses',
+        name: 'Received Amount',
         xValueMapper: (ChartSampleData sales, _) => sales.x as DateTime,
         yValueMapper: (ChartSampleData sales, _) => sales.secondSeriesYValue,
       )
     ];
+  }
+
+  double extractSentAmount(String message) {
+    final match = RegExp(r'(\d+) RWF transferred').firstMatch(message);
+    if (match != null) {
+      return double.parse(match.group(1)!);
+    }
+    return 0.0;
+  }
+
+  double extractReceivedAmount(String message) {
+    final match = RegExp(r'You have received (\d+) RWF').firstMatch(message);
+    if (match != null) {
+      return double.parse(match.group(1)!);
+    }
+    return 0.0;
+  }
+
+  DateTime parseDate(String message) {
+    final match =
+        RegExp(r'at (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})').firstMatch(message);
+    if (match != null) {
+      return DateTime.parse(match.group(1)!);
+    }
+    return DateTime.now();
   }
 
   @override
@@ -109,79 +147,168 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                Card(
-                  elevation: 0.0,
-                  margin: const EdgeInsets.fromLTRB(8.0, 20.0, 8.0, 0),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SfCartesianChart(
-                      legend: Legend(isVisible: !isCardView, opacity: 0.7),
-                      title: ChartTitle(
-                          text:
-                              isCardView ? '' : 'Monthly Transaction analysis'),
-                      plotAreaBorderWidth: 0,
-                      primaryXAxis: DateTimeAxis(
-                          dateFormat: DateFormat.y(),
-                          interval: 1,
-                          intervalType: DateTimeIntervalType.years,
-                          majorGridLines: const MajorGridLines(width: 0),
-                          edgeLabelPlacement: EdgeLabelPlacement.shift),
-                      primaryYAxis: const NumericAxis(
-                          labelFormat: '{value}M',
-                          interval: 1,
-                          axisLine: AxisLine(width: 0),
-                          majorTickLines: MajorTickLines(size: 0)),
-                      series: _getDefaultAreaSeries(),
-                      tooltipBehavior: TooltipBehavior(enable: true),
-                    ),
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Intergrated \nBudget 2024",
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
                   ),
-                ),
-
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0, horizontal: 20.0),
-                  child: SizedBox(
-                    height: 400, // Set a fixed height for the ListView
-                    child: ListView.builder(
-                      itemCount: filteredMessages.length,
-                      itemBuilder: (context, index) {
-                        final message = filteredMessages[index];
-                        final icon = getTransactionIcon(message.body!);
-                        final iconColor = getIconColor(icon);
-
-                        return Card(
-                          margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0),
-                          elevation: 2.0,
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: iconColor.withOpacity(
-                                  0.2), // Lighten the icon color for the background
-                              child: Icon(icon, color: iconColor),
-                            ),
-                            title: Text(message.body!),
-                            subtitle: Text(
-                                'Date: ${DateTime.fromMillisecondsSinceEpoch(message.date!)}'),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ],
+                  ProfileImageCard(
+                    imageSrc:
+                        'https://plus.unsplash.com/premium_photo-1683121366070-5ceb7e007a97?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D',
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+            Container(
+              margin: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                    color: const Color.fromARGB(255, 213, 213, 213),
+                    width: 1.0),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Card(
+                elevation: 0.0,
+                color: Colors.transparent,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SfCartesianChart(
+                    legend: const Legend(isVisible: true, opacity: 0.7),
+                    title:
+                        const ChartTitle(text: 'Monthly Transaction Analysis'),
+                    plotAreaBorderWidth: 0,
+                    primaryXAxis: const CategoryAxis(
+                      majorGridLines: MajorGridLines(width: 0),
+                      edgeLabelPlacement: EdgeLabelPlacement.shift,
+                    ),
+                    primaryYAxis: const NumericAxis(
+                      labelFormat: '{value}',
+                      axisLine: AxisLine(width: 1),
+                      majorTickLines: MajorTickLines(size: 1),
+                    ),
+                    series: _getDefaultAreaSeries(),
+                    tooltipBehavior: TooltipBehavior(enable: true),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                    color: const Color.fromARGB(255, 213, 213, 213),
+                    width: 1.0),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 0.0, horizontal: 5.0),
+              child: SizedBox(
+                height: 400, // Set a fixed height for the ListView
+                child: ListView.builder(
+                  itemCount: filteredMessages.length,
+                  itemBuilder: (context, index) {
+                    final message = filteredMessages[index];
+                    final icon = getTransactionIcon(message.body!);
+                    final iconColor = getIconColor(icon);
+
+                    return Container(
+                      margin: const EdgeInsets.symmetric(vertical: 8.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 213, 213, 213),
+                            width: 1.0),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Card(
+                        color: Colors.transparent,
+                        elevation: 0.0,
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: iconColor.withOpacity(
+                                0.2), // Lighten the icon color for the background
+                            child: Icon(icon, color: iconColor),
+                          ),
+                          title: Text(message.body!),
+                          subtitle: Text(
+                              'Date: ${DateTime.fromMillisecondsSinceEpoch(message.date!)}'),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-///Chart sample data
+List<ChartSampleData> prepareChartData(
+    Map<String, Map<String, double>> groupedAmounts) {
+  List<ChartSampleData> chartSamples = [];
+
+  groupedAmounts.forEach((month, amounts) {
+    List<String> parts = month.split('-');
+
+    int year = int.parse(parts[0]);
+    int monthInt = int.parse(parts[1]);
+
+    chartSamples.add(ChartSampleData(
+      x: DateTime(year, monthInt),
+      y: amounts['sent']!,
+      secondSeriesYValue: amounts['received']!,
+    ));
+  });
+
+  return chartSamples;
+}
+
+class TransactionData {
+  final String month;
+  final double sent;
+  final double received;
+
+  TransactionData(this.month, this.sent, this.received);
+}
+
+class Message {
+  final String body;
+
+  Message({required this.body});
+}
+
+class ProfileImageCard extends StatelessWidget {
+  final String imageSrc;
+  const ProfileImageCard({super.key, required this.imageSrc});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      width: 50,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          image: DecorationImage(
+              image: NetworkImage(imageSrc), fit: BoxFit.cover)),
+    );
+  }
+}
+
 class ChartSampleData {
   /// Holds the datapoint values like x, y, etc.,
   ChartSampleData(

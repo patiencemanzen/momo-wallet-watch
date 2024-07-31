@@ -3,6 +3,7 @@ import 'package:momo_wallet_watcher/screens/home_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 // ignore: depend_on_referenced_packages
 import 'package:firebase_core/firebase_core.dart';
+import 'package:momo_wallet_watcher/services/analytics_service.dart';
 import 'package:momo_wallet_watcher/services/budget_service.dart';
 import 'package:momo_wallet_watcher/services/expense_service.dart';
 import 'package:momo_wallet_watcher/services/goal_service.dart';
@@ -31,6 +32,7 @@ class WalletWatcher extends StatelessWidget {
         Provider<BudgetService>(create: (_) => BudgetService()),
         Provider<GoalService>(create: (_) => GoalService()),
         Provider<ExpenseService>(create: (_) => ExpenseService()),
+        Provider<AnalyticsService>(create: (_) => AnalyticsService()),
       ],
       child: MaterialApp(
         title: 'Momo Watcher',
@@ -38,7 +40,7 @@ class WalletWatcher extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: const MyHomePage(
-          title: "Momo Wallet Watcher",
+          title: "Wallet Watcher",
         ),
       ),
     );
