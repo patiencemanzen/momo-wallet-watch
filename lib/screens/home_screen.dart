@@ -66,16 +66,23 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title ?? "Home"),
+        title: Text(widget.title ?? "Home",
+            style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 19)),
+        backgroundColor: const Color.fromARGB(255, 3, 143, 141),
         actions: [
           IconButton(
             icon: const Icon(Icons.person),
+            color: Colors.white,
             onPressed: () {
               // Handle profile icon press
             },
           ),
           IconButton(
             icon: const Icon(Icons.settings),
+            color: Colors.white,
             onPressed: () {
               // Handle settings icon press
             },
