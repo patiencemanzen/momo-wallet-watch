@@ -1,4 +1,4 @@
-name: momo_wallet_watcher
+name: wallet_watcher
 description: "Intuitive mobile application designed to help users manage and analyze their financial transactions."
 
 # The following line prevents the package from being accidentally published to

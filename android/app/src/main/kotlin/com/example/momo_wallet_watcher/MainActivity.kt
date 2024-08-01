@@ -1,4 +1,4 @@
-package com.example.momo_wallet_watcher
+package com.example.wallet_watcher
 
 import io.flutter.embedding.android.FlutterActivity
 

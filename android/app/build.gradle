@@ -27,7 +27,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace = "com.example.momo_wallet_watcher"
+    namespace = "com.example.wallet_watcher"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -37,7 +37,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.momo_wallet_watcher"
+        applicationId = "com.example.wallet_watcher"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdk = flutter.minSdkVersion

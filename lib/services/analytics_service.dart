@@ -1,9 +1,9 @@
 // ignore_for_file: avoid_types_as_parameter_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:momo_wallet_watcher/models/budget.dart';
-import 'package:momo_wallet_watcher/models/expense.dart';
-import 'package:momo_wallet_watcher/models/goal.dart';
+import 'package:wallet_watcher/models/budget.dart';
+import 'package:wallet_watcher/models/expense.dart';
+import 'package:wallet_watcher/models/goal.dart';
 
 class AnalyticsService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

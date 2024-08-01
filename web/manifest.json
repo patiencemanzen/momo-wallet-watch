@@ -1,6 +1,6 @@
 {
-    "name": "momo_wallet_watcher",
-    "short_name": "momo_wallet_watcher",
+    "name": "wallet_watcher",
+    "short_name": "wallet_watcher",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

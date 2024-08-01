@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:momo_wallet_watcher/services/budget_service.dart';
-import 'package:momo_wallet_watcher/models/budget.dart';
+import 'package:wallet_watcher/services/budget_service.dart';
+import 'package:wallet_watcher/models/budget.dart';
 import 'package:intl/intl.dart';
 
 class BudgetScreen extends StatelessWidget {

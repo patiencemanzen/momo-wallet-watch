@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.SEND_SMS"/>
 
     <application
-        android:label="momo_wallet_watcher"
+        android:label="wallet_watcher"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 

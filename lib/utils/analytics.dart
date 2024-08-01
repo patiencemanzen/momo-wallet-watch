@@ -1,6 +1,6 @@
-import 'package:momo_wallet_watcher/models/budget.dart';
-import 'package:momo_wallet_watcher/models/expense.dart';
-import 'package:momo_wallet_watcher/models/goal.dart';
+import 'package:wallet_watcher/models/budget.dart';
+import 'package:wallet_watcher/models/expense.dart';
+import 'package:wallet_watcher/models/goal.dart';
 
 class Analytics {
   double calculateTotalExpenses(List<Expense> expenses) {

@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyDnTtZFb4LKZtXNEYe8GEG0TCHLSw9XAp4</string>
+	<string>AIzaSyB5xQdlua1fc_-4Mnmlt9LO12r8XkhtwtU</string>
 	<key>GCM_SENDER_ID</key>
-	<string>98009371906</string>
+	<string>490506863605</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.momoWalletWatcher</string>
 	<key>PROJECT_ID</key>
-	<string>momo-watcher</string>
+	<string>wallet-watcher-6bd73</string>
 	<key>STORAGE_BUCKET</key>
-	<string>momo-watcher.appspot.com</string>
+	<string>wallet-watcher-6bd73.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:98009371906:ios:c8cdfe18eb95ce7b489e1b</string>
+	<string>1:490506863605:ios:7fbdcc81acf01a6eacd6bc</string>
 </dict>
 </plist>

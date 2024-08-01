@@ -3,7 +3,7 @@ library circular_bottom_navigation;
 import 'dart:core';
 import 'dart:math';
 
-import 'package:momo_wallet_watcher/components/tab_item.dart';
+import 'package:wallet_watcher/components/tab_item.dart';
 import 'package:flutter/material.dart';
 
 typedef CircularBottomNavSelectedCallback = Function(int? selectedPos);

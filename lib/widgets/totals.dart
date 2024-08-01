@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:momo_wallet_watcher/models/budget.dart';
-import 'package:momo_wallet_watcher/models/expense.dart';
-import 'package:momo_wallet_watcher/models/goal.dart';
-import 'package:momo_wallet_watcher/services/analytics_service.dart';
-import 'package:momo_wallet_watcher/utils/analytics.dart';
+import 'package:wallet_watcher/models/budget.dart';
+import 'package:wallet_watcher/models/expense.dart';
+import 'package:wallet_watcher/models/goal.dart';
+import 'package:wallet_watcher/services/analytics_service.dart';
+import 'package:wallet_watcher/utils/analytics.dart';
 import 'package:provider/provider.dart';
 
 class TotalsScreen extends StatelessWidget {

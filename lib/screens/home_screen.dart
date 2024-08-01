@@ -1,10 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
-import 'package:momo_wallet_watcher/components/tab_item.dart';
-import 'package:momo_wallet_watcher/components/circular_bottom_navigation.dart';
-import 'package:momo_wallet_watcher/screens/analytics_screen.dart';
-import 'package:momo_wallet_watcher/screens/budgeting_screen.dart';
-import 'package:momo_wallet_watcher/screens/expenses_screen.dart';
-import 'package:momo_wallet_watcher/screens/goals_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:wallet_watcher/components/tab_item.dart';
+import 'package:wallet_watcher/components/circular_bottom_navigation.dart';
+import 'package:wallet_watcher/screens/analytics_screen.dart';
+import 'package:wallet_watcher/screens/budgeting_screen.dart';
+import 'package:wallet_watcher/screens/expenses_screen.dart';
+import 'package:wallet_watcher/screens/goals_screen.dart';
+import 'package:wallet_watcher/screens/login_screen.dart';
+import 'package:wallet_watcher/services/auth_service.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
@@ -64,6 +69,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title ?? "Home",
@@ -85,6 +92,17 @@ class _MyHomePageState extends State<MyHomePage> {
             color: Colors.white,
             onPressed: () {
               // Handle settings icon press
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            color: Colors.white,
+            onPressed: () async {
+              await authService.signOut();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+              );
             },
           ),
         ],

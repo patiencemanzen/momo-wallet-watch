@@ -41,48 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBU1GSCcmvbYQ5yGUSkzPEuVS4Slc6fYZA',
-    appId: '1:98009371906:web:bcab8fd75af156f8489e1b',
-    messagingSenderId: '98009371906',
-    projectId: 'momo-watcher',
-    authDomain: 'momo-watcher.firebaseapp.com',
-    storageBucket: 'momo-watcher.appspot.com',
-    measurementId: 'G-PJS4ECP2C4',
+    apiKey: 'AIzaSyBe9Hr7MBU_2brk_9y3IH4PfzownP_YJB4',
+    appId: '1:490506863605:web:c19bd84f8f7755d2acd6bc',
+    messagingSenderId: '490506863605',
+    projectId: 'wallet-watcher-6bd73',
+    authDomain: 'wallet-watcher-6bd73.firebaseapp.com',
+    storageBucket: 'wallet-watcher-6bd73.appspot.com',
+    measurementId: 'G-C4XM7YLL7E',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDpt3RfzFQY_zPhS9lGEFE78iOhMR9OgXw',
-    appId: '1:98009371906:android:5438f15fa7ec3610489e1b',
-    messagingSenderId: '98009371906',
-    projectId: 'momo-watcher',
-    storageBucket: 'momo-watcher.appspot.com',
+    apiKey: 'AIzaSyAL1mmIPAit2uPoJ1m2NWvLccIO-2c4oko',
+    appId: '1:490506863605:android:cc21f03ef2770559acd6bc',
+    messagingSenderId: '490506863605',
+    projectId: 'wallet-watcher-6bd73',
+    storageBucket: 'wallet-watcher-6bd73.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDnTtZFb4LKZtXNEYe8GEG0TCHLSw9XAp4',
-    appId: '1:98009371906:ios:c8cdfe18eb95ce7b489e1b',
-    messagingSenderId: '98009371906',
-    projectId: 'momo-watcher',
-    storageBucket: 'momo-watcher.appspot.com',
+    apiKey: 'AIzaSyB5xQdlua1fc_-4Mnmlt9LO12r8XkhtwtU',
+    appId: '1:490506863605:ios:7fbdcc81acf01a6eacd6bc',
+    messagingSenderId: '490506863605',
+    projectId: 'wallet-watcher-6bd73',
+    storageBucket: 'wallet-watcher-6bd73.appspot.com',
     iosBundleId: 'com.example.momoWalletWatcher',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDnTtZFb4LKZtXNEYe8GEG0TCHLSw9XAp4',
-    appId: '1:98009371906:ios:c8cdfe18eb95ce7b489e1b',
-    messagingSenderId: '98009371906',
-    projectId: 'momo-watcher',
-    storageBucket: 'momo-watcher.appspot.com',
+    apiKey: 'AIzaSyB5xQdlua1fc_-4Mnmlt9LO12r8XkhtwtU',
+    appId: '1:490506863605:ios:7fbdcc81acf01a6eacd6bc',
+    messagingSenderId: '490506863605',
+    projectId: 'wallet-watcher-6bd73',
+    storageBucket: 'wallet-watcher-6bd73.appspot.com',
     iosBundleId: 'com.example.momoWalletWatcher',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBU1GSCcmvbYQ5yGUSkzPEuVS4Slc6fYZA',
-    appId: '1:98009371906:web:80feb5285bed387b489e1b',
-    messagingSenderId: '98009371906',
-    projectId: 'momo-watcher',
-    authDomain: 'momo-watcher.firebaseapp.com',
-    storageBucket: 'momo-watcher.appspot.com',
-    measurementId: 'G-X0JTN8FHKT',
+    apiKey: 'AIzaSyBe9Hr7MBU_2brk_9y3IH4PfzownP_YJB4',
+    appId: '1:490506863605:web:bbe103c22fd1b230acd6bc',
+    messagingSenderId: '490506863605',
+    projectId: 'wallet-watcher-6bd73',
+    authDomain: 'wallet-watcher-6bd73.firebaseapp.com',
+    storageBucket: 'wallet-watcher-6bd73.appspot.com',
+    measurementId: 'G-J60W24ZTXY',
   );
+
 }
