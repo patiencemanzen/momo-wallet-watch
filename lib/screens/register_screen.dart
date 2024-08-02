@@ -23,11 +23,34 @@ class _SignupScreenState extends State<SignupScreen> {
     final authService = Provider.of<AuthService>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign Up')),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            Text(
+              'Welcome Here 👋',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ).copyWith(color: Colors.black, fontSize: 20),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'We happy to see you. Create your First account',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white)
+                  .copyWith(color: Colors.black, fontSize: 14),
+            ),
+            const SizedBox(height: 36),
             TextField(
               controller: _nameController,
               decoration: const InputDecoration(labelText: 'Name'),
@@ -41,7 +64,9 @@ class _SignupScreenState extends State<SignupScreen> {
               decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
             ),
+            
             const SizedBox(height: 20),
+            
             ElevatedButton(
               onPressed: () async {
                 try {

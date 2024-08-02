@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:telephony/telephony.dart';
+import 'package:wallet_watcher/models/budget.dart';
+import 'package:wallet_watcher/models/expense.dart';
+import 'package:wallet_watcher/services/budget_service.dart';
+import 'package:wallet_watcher/services/budget_service.dart';
+import 'package:wallet_watcher/models/budget.dart';
+import 'package:intl/intl.dart';
+import 'package:wallet_watcher/services/expense_service.dart';
 
 class AnalyticsScreen extends StatefulWidget {
   const AnalyticsScreen({
@@ -146,113 +154,129 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ExpenseService expenseService = ExpenseService();
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Intergrated \nBudget 2024",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
-                  ),
-                  ProfileImageCard(
-                    imageSrc:
-                        'https://plus.unsplash.com/premium_photo-1683121366070-5ceb7e007a97?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D',
-                  )
-                ],
-              ),
+        child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height,
             ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                    color: const Color.fromARGB(255, 213, 213, 213),
-                    width: 1.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Card(
-                elevation: 0.0,
-                color: Colors.transparent,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SfCartesianChart(
-                    legend: const Legend(isVisible: true, opacity: 0.7),
-                    title:
-                        const ChartTitle(text: 'Monthly Transaction Analysis'),
-                    plotAreaBorderWidth: 0,
-                    primaryXAxis: const CategoryAxis(
-                      majorGridLines: MajorGridLines(width: 0),
-                      edgeLabelPlacement: EdgeLabelPlacement.shift,
-                    ),
-                    primaryYAxis: const NumericAxis(
-                      labelFormat: '{value}',
-                      axisLine: AxisLine(width: 1),
-                      majorTickLines: MajorTickLines(size: 1),
-                    ),
-                    series: _getDefaultAreaSeries(),
-                    tooltipBehavior: TooltipBehavior(enable: true),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 20),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Intergrated \nBudget 2024",
+                        style: TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.w500),
+                      ),
+                      ProfileImageCard(
+                        imageSrc:
+                            'https://plus.unsplash.com/premium_photo-1683121366070-5ceb7e007a97?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D',
+                      )
+                    ],
                   ),
                 ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                    color: const Color.fromARGB(255, 213, 213, 213),
-                    width: 1.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              padding:
-                  const EdgeInsets.symmetric(vertical: 0.0, horizontal: 5.0),
-              child: SizedBox(
-                height: 400, // Set a fixed height for the ListView
-                child: ListView.builder(
-                  itemCount: filteredMessages.length,
-                  itemBuilder: (context, index) {
-                    final message = filteredMessages[index];
-                    final icon = getTransactionIcon(message.body!);
-                    final iconColor = getIconColor(icon);
-
-                    return Container(
-                      margin: const EdgeInsets.symmetric(vertical: 8.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                            color: const Color.fromARGB(255, 213, 213, 213),
-                            width: 1.0),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: Card(
-                        color: Colors.transparent,
-                        elevation: 0.0,
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: iconColor.withOpacity(
-                                0.2), // Lighten the icon color for the background
-                            child: Icon(icon, color: iconColor),
-                          ),
-                          title: Text(message.body!),
-                          subtitle: Text(
-                              'Date: ${DateTime.fromMillisecondsSinceEpoch(message.date!)}'),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 213, 213, 213),
+                        width: 1.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: Card(
+                    elevation: 0.0,
+                    color: Colors.transparent,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SfCartesianChart(
+                        legend: const Legend(isVisible: true, opacity: 0.7),
+                        title: const ChartTitle(
+                            text: 'Monthly Transaction Analysis'),
+                        plotAreaBorderWidth: 0,
+                        primaryXAxis: const CategoryAxis(
+                          majorGridLines: MajorGridLines(width: 0),
+                          edgeLabelPlacement: EdgeLabelPlacement.shift,
                         ),
+                        primaryYAxis: const NumericAxis(
+                          labelFormat: '{value}',
+                          axisLine: AxisLine(width: 1),
+                          majorTickLines: MajorTickLines(size: 1),
+                        ),
+                        series: _getDefaultAreaSeries(),
+                        tooltipBehavior: TooltipBehavior(enable: true),
                       ),
-                    );
-                  },
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ],
-        ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const BudgetList(),
+                    ExpenseList(expenseService: expenseService),
+                  ],
+                ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 213, 213, 213),
+                        width: 1.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 0.0, horizontal: 5.0),
+                  child: SizedBox(
+                    height: 200, // Set a fixed height for the ListView
+                    child: ListView.builder(
+                      itemCount: filteredMessages.length,
+                      itemBuilder: (context, index) {
+                        final message = filteredMessages[index];
+                        final icon = getTransactionIcon(message.body!);
+                        final iconColor = getIconColor(icon);
+
+                        return Container(
+                          margin: const EdgeInsets.symmetric(vertical: 8.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                                color: const Color.fromARGB(255, 213, 213, 213),
+                                width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Card(
+                            color: Colors.transparent,
+                            elevation: 0.0,
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: iconColor.withOpacity(
+                                    0.2), // Lighten the icon color for the background
+                                child: Icon(icon, color: iconColor),
+                              ),
+                              title: Text(message.body!),
+                              subtitle: Text(
+                                  'Date: ${DateTime.fromMillisecondsSinceEpoch(message.date!)}'),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            )),
       ),
     );
   }
@@ -368,4 +392,173 @@ class ChartSampleData {
 
   /// Holds open value of the datapoint
   final num? volume;
+}
+
+class BudgetList extends StatelessWidget {
+  const BudgetList({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final budgetService = Provider.of<BudgetService>(context);
+
+    return StreamBuilder<List<Budget>>(
+      stream: budgetService.getBudgets(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        final budgets = snapshot.data ?? [];
+        final totalAmount =
+            budgets.fold(0.0, (sum, budget) => sum + budget.amount);
+
+        return Container(
+          height: 130,
+          width: 160,
+          margin: const EdgeInsets.only(right: 10, left: 15),
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+                color: const Color.fromARGB(255, 213, 213, 213), width: 1.0),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Center(
+                child: Text('Budgeting',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
+              ),
+              const SizedBox(height: 10),
+              Center(
+                child: RichText(
+                    text: TextSpan(
+                        text: r' ',
+                        style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black87),
+                        children: [
+                      TextSpan(
+                          text: totalAmount.toStringAsFixed(2),
+                          style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black87)),
+                      const TextSpan(
+                          text: '/mo',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black87))
+                    ])),
+              ),
+              const Center(
+                child: Text(
+                  r'182 when you pay yearly',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w200,
+                      color: Colors.grey,
+                      fontSize: 13),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class ExpenseList extends StatelessWidget {
+  final ExpenseService expenseService;
+
+  const ExpenseList({super.key, required this.expenseService});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: StreamBuilder<List<Expense>>(
+        stream: expenseService.getExpenses(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final expenses = snapshot.data ?? [];
+          final totalAmount =
+              expenses.fold(0.0, (sum, item) => sum + item.amount);
+
+          return Container(
+            height: 130,
+            width: 150,
+            padding: const EdgeInsets.all(10),
+            margin: const EdgeInsets.only(right: 15),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                  color: const Color.fromARGB(255, 213, 213, 213), width: 1.0),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Center(
+                  child: Text('Expeses',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black)),
+                ),
+                const SizedBox(height: 10),
+                Center(
+                  child: RichText(
+                      text: TextSpan(
+                          text: r' ',
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black87),
+                          children: [
+                        TextSpan(
+                            text: totalAmount.toStringAsFixed(2),
+                            style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black87)),
+                        const TextSpan(
+                            text: '/mo',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black87))
+                      ])),
+                ),
+                const Center(
+                  child: Text(
+                    r'182 when you pay yearly',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w200,
+                        color: Colors.grey,
+                        fontSize: 13),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
 }

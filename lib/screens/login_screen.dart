@@ -25,11 +25,34 @@ class _LoginScreenState extends State<LoginScreen> {
     final authService = Provider.of<AuthService>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            Text(
+              'Hi, Welcome Back! 👋',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ).copyWith(color: Colors.black, fontSize: 20),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'We happy to see you. Sign In to your account',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white)
+                  .copyWith(color: Colors.black, fontSize: 14),
+            ),
+            const SizedBox(height: 36),
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(labelText: 'Email'),
@@ -70,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   MaterialPageRoute(builder: (context) => const SignupScreen()),
                 );
               },
-              child: Text('Don\'t have an account? Sign up'),
+              child: const Text('Don\'t have an account? Sign up'),
             ),
             if (_errorMessage.isNotEmpty)
               Text(_errorMessage, style: const TextStyle(color: Colors.red)),

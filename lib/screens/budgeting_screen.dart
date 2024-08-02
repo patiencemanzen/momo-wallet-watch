@@ -123,6 +123,7 @@ class BudgetScreen extends StatelessWidget {
               ),
             ),
           ),
+          
           Expanded(
             child: StreamBuilder<List<Budget>>(
               stream: budgetService.getBudgets(),
